@@ -33,9 +33,17 @@ function displayBooks() {
         <p><strong>Author:</strong> ${book.author}</p>
         <p><strong>Pages:</strong> ${book.pages}</p>
         <p><strong>Read:</strong> ${book.read ? "Yes" : "No"}</p>
+        <button class="toggle-read-btn" data-id="${book.id}">${book.read ? "Mark as Unread" : "Mark as Read"}</button>
         <button class="delete-btn" data-id="${book.id}">Delete</button>
         `;
     librayContainer.appendChild(bookCard);
+  });
+
+  document.querySelectorAll(".toggle-read-btn").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const bookId = event.target.getAttribute("data-id");
+      toggleReadStatus(bookId);
+    });
   });
 
   document.querySelectorAll(".delete-btn").forEach((button) => {
@@ -44,6 +52,14 @@ function displayBooks() {
       removeBook(bookId);
     });
   });
+}
+
+function toggleReadStatus(bookId) {
+  const book = myLibrary.find((book) => book.id === bookId);
+  if (book) {
+    book.read = !book.read;
+    displayBooks();
+  }
 }
 
 function removeBook(bookId) {
