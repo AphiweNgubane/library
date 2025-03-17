@@ -26,15 +26,32 @@ function displayBooks() {
   myLibrary.forEach((book) => {
     const bookCard = document.createElement("div");
     bookCard.classList.add("book-card");
+    bookCard.setAttribute("data-id", book.id);
 
     bookCard.innerHTML = `
         <h2>${book.title}</h2>
         <p><strong>Author:</strong> ${book.author}</p>
         <p><strong>Pages:</strong> ${book.pages}</p>
         <p><strong>Read:</strong> ${book.read ? "Yes" : "No"}</p>
+        <button class="delete-btn" data-id="${book.id}">Delete</button>
         `;
     librayContainer.appendChild(bookCard);
   });
+
+  document.querySelectorAll(".delete-btn").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const bookId = event.target.getAttribute("data-id");
+      removeBook(bookId);
+    });
+  });
+}
+
+function removeBook(bookId) {
+  const index = myLibrary.findIndex((book) => book.id === bookId);
+  if (index !== -1) {
+    myLibrary.splice(index, 1);
+    displayBooks();
+  }
 }
 
 const newBookbtn = document.getElementById("new-book-btn");
